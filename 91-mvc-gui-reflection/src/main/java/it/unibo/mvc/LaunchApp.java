@@ -11,6 +11,10 @@ import it.unibo.mvc.view.DrawNumberSwingView;
  */
 public final class LaunchApp {
 
+    static {
+        
+    }
+
     private LaunchApp() { }
 
     /**

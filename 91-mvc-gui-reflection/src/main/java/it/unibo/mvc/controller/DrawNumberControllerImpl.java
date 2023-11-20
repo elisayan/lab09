@@ -5,8 +5,10 @@ import it.unibo.mvc.api.DrawNumberController;
 import it.unibo.mvc.api.DrawNumberView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * This class implements the game controller. It orchestrates the game, exposes methods to its observers
@@ -15,7 +17,7 @@ import java.util.Objects;
 public final class DrawNumberControllerImpl implements DrawNumberController {
 
     private final DrawNumber model;
-    private final List<DrawNumberView> views = new ArrayList<>();
+    private final Set<DrawNumberView> views = new HashSet<>();
 
     /**
      * Builds a new game controller provided a game model.
@@ -36,7 +38,9 @@ public final class DrawNumberControllerImpl implements DrawNumberController {
 
     @Override
     public void newAttempt(final int n) {
-        Objects.requireNonNull(views, "There is no view attached!").result(model.attempt(n));
+        for (DrawNumberView drawNumberView : views) {
+            Objects.requireNonNull(drawNumberView, "There is no view attached!").result(model.attempt(n));
+        }
     }
 
     @Override
