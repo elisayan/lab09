@@ -2,6 +2,7 @@ package it.unibo.mvc;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 import it.unibo.mvc.api.DrawNumberController;
 import it.unibo.mvc.api.DrawNumberView;
@@ -31,22 +32,22 @@ public final class LaunchApp {
     public static void main(final String... args) throws ClassNotFoundException {        
         final var model = new DrawNumberImpl();
         final DrawNumberController app = new DrawNumberControllerImpl(model);
-        app.addView(new DrawNumberSwingView());
-        app.addView(new DrawNumberOutputView());
         
-        // String[] viewClassName = {"DrawNumberOutputView", "DrawNumberSwingView"};
-        // for (String className : viewClassName) {
-        //     try {
-        //         Class<?> clazz = Class.forName(className);
-        //         Constructor<?> constructor = clazz.getDeclaredConstructor();
-        //         Object instance = constructor.newInstance();
-
-        //         if(instance instanceof DrawNumberView){
-        //             app.addView((DrawNumberView) instance);
-        //         }
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //     }
-        // }
+        Set<String> viewClassName =  Set.of("DrawNumberOutputView", "DrawNumberSwingView");
+        for (String className : viewClassName) {
+            try {
+                Class<?> clazz = Class.forName("it.unibo.mvc.view." + className);
+                for (int i = 0; i < 3; i++) {
+                    Object view = clazz.getConstructor().newInstance();
+                    
+                    if (view instanceof DrawNumberView) {
+                        app.addView((DrawNumberView) view);
+                    }
+                }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
