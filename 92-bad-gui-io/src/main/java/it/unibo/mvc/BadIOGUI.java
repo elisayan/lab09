@@ -5,6 +5,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -46,7 +48,11 @@ public class BadIOGUI {
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         final JButton write = new JButton("Write on file");
         canvas.add(write, BorderLayout.CENTER);
+        //Ex 01.02
+        final JButton read = new JButton("Read file");
+        panel.add(read, BorderLayout.CENTER);
         frame.setContentPane(canvas);
+        frame.setContentPane(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         /*
@@ -68,6 +74,15 @@ public class BadIOGUI {
                     JOptionPane.showMessageDialog(frame, e1, "Error", JOptionPane.ERROR_MESSAGE);
                     e1.printStackTrace(); // NOPMD: allowed as this is just an exercise
                 }
+            }
+        });
+
+        //Ex 01.02
+        read.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("ciao");
             }
         });
     }
