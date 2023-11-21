@@ -77,12 +77,20 @@ public class BadIOGUI {
             }
         });
 
-        //Ex 01.02
+        //Ex 01.02 - 01.03
         read.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("ciao");
+                try {
+                    List<String> lines = Files.readAllLines(new File(PATH).toPath());
+                    for (String line : lines) {
+                        System.out.println(line);
+                    }
+                } catch (IOException e2) {
+                    JOptionPane.showMessageDialog(frame, e2, "Error", JOptionPane.ERROR_MESSAGE);
+                    e2.printStackTrace();
+                }            
             }
         });
     }
