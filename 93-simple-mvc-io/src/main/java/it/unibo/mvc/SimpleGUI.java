@@ -5,9 +5,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import it.unibo.mvc.api.SimpleController;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 /**
  * A very simple program using a graphical interface.
@@ -19,15 +24,27 @@ public final class SimpleGUI {
     private static final int PROPORTION = 5;
     private final JFrame frame = new JFrame(TITLE);
 
-    public SimpleGUI() {
+    public SimpleGUI(SimpleController controller) {
         final JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        final JButton button = new JButton("Save");
-        panel.add(button, BorderLayout.SOUTH);
+        final JButton save = new JButton("Save");
+        panel.add(save, BorderLayout.SOUTH);
         final JTextArea textArea = new JTextArea();
         panel.add(textArea);
         frame.setContentPane(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        save.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.writeContent(textArea.getText());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }            
+        });
     }
 
     public void display() {
@@ -41,6 +58,7 @@ public final class SimpleGUI {
     }
 
     public static void main(String[] args) {
-        new SimpleGUI().display();
+        SimpleController controller = new Controller();
+        new SimpleGUI(controller).display();
     }
 }

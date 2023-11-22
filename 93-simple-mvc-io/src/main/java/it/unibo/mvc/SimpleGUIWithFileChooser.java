@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -29,8 +30,8 @@ public final class SimpleGUIWithFileChooser {
     public SimpleGUIWithFileChooser(SimpleController controller) {
         final JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        final JButton button = new JButton("Save");
-        panel.add(button, BorderLayout.SOUTH);
+        final JButton save = new JButton("Save");
+        panel.add(save, BorderLayout.SOUTH);
 
         final JPanel browsePanel = new JPanel();
         browsePanel.setLayout(new BorderLayout()); 
@@ -40,6 +41,8 @@ public final class SimpleGUIWithFileChooser {
         textField.setEditable(false);
         browsePanel.add(textField, BorderLayout.CENTER);
         panel.add(browsePanel, BorderLayout.NORTH);
+        final JTextArea textArea = new JTextArea();
+        panel.add(textArea);
 
         frame.setContentPane(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,6 +60,18 @@ public final class SimpleGUIWithFileChooser {
                     JOptionPane.showMessageDialog(textField, e, TITLE, returnVal);
                 }
             }
+        });
+
+        save.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.writeContent(textArea.getText());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }            
         });
     }
 

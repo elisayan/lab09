@@ -38,8 +38,8 @@ public class Controller implements SimpleController{
 
     @Override
     public void writeContent(String content) throws IOException {
-        final OutputStream file = new FileOutputStream(this.output.getName());
+        final OutputStream file = new FileOutputStream(this.output.getPath());
         final DataOutputStream out = new DataOutputStream(file);
-        out.writeUTF(content);        
+        out.writeUTF(content);
     }
 }
