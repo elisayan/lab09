@@ -3,12 +3,18 @@ package it.unibo.mvc;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import it.unibo.mvc.api.SimpleController;
 
 /**
  * A very simple program using a graphical interface.
@@ -20,7 +26,7 @@ public final class SimpleGUIWithFileChooser {
     private static final int PROPORTION = 5;
     private final JFrame frame = new JFrame(TITLE);
 
-    public SimpleGUIWithFileChooser() {
+    public SimpleGUIWithFileChooser(SimpleController controller) {
         final JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         final JButton button = new JButton("Save");
@@ -30,12 +36,28 @@ public final class SimpleGUIWithFileChooser {
         browsePanel.setLayout(new BorderLayout()); 
         final JButton browse = new JButton("Browse...");
         browsePanel.add(browse, BorderLayout.LINE_END);
-        final JTextField textField = new JTextField();
+        final JTextField textField = new JTextField(controller.getPath());
+        textField.setEditable(false);
         browsePanel.add(textField, BorderLayout.CENTER);
-
         panel.add(browsePanel, BorderLayout.NORTH);
+
         frame.setContentPane(panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        browse.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                int returnVal = chooser.showSaveDialog(frame);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    controller.setFile(chooser.getSelectedFile());
+                    textField.setText(chooser.getSelectedFile().getPath());
+                } else if (returnVal != JFileChooser.CANCEL_OPTION) {
+                    JOptionPane.showMessageDialog(textField, e, TITLE, returnVal);
+                }
+            }
+        });
     }
 
     public void display() {
@@ -49,6 +71,7 @@ public final class SimpleGUIWithFileChooser {
     }
 
     public static void main(String[] args) {
-        new SimpleGUIWithFileChooser().display();
+        SimpleController controller = new Controller();
+        new SimpleGUIWithFileChooser(controller).display();
     }
 }
