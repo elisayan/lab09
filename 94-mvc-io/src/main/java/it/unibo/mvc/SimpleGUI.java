@@ -8,9 +8,11 @@ import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.List;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 /**
  * A very simple program using a graphical interface.
@@ -56,8 +58,9 @@ public final class SimpleGUI {
         showHistory.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-                
+            public void actionPerformed(ActionEvent e) {                
+                textArea.setText(String.valueOf(SimpleGUI.this.controller.getHistory().toString().replace("[", "")
+                        .replace(", ", "\n").replace("]", "")));
             }
             
         });
